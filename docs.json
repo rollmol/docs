@@ -17,11 +17,41 @@
             "group": "Découvrir Claude",
             "pages": [
               "index",
-              "claude/101/chapitre-1",
-              "claude/101/chapitre-2",
-              "claude/101/chapitre-3",
-              "claude/101/chapitre-4",
-              "claude/101/chapitre-5"
+              "claude/101/portrait-assistant-ia",
+              "claude/101/premiers-echanges",
+              "claude/101/ajuster-evaluer-progresser"
+            ]
+          },
+          {
+            "group": "L'application de bureau Claude",
+            "pages": [
+              "claude/101/chat",
+              "claude/101/cowork",
+              "claude/101/code"
+            ]
+          },
+          {
+            "group": "Structurer votre espace de travail",
+            "pages": [
+              "claude/101/projets",
+              "claude/101/artefacts",
+              "claude/101/competences"
+            ]
+          },
+          {
+            "group": "Brancher Claude sur votre environnement",
+            "pages": [
+              "claude/101/connecteurs",
+              "claude/101/memoire-collective",
+              "claude/101/recherche-approfondie"
+            ]
+          },
+          {
+            "group": "Pour aller plus loin",
+            "pages": [
+              "claude/101/exemples-concrets",
+              "claude/101/claude-au-dela",
+              "claude/101/ce-que-vous-avez-construit"
             ]
           }
         ]
@@ -39,13 +69,7 @@
       }
     ],
     "global": {
-      "anchors": [
-        {
-          "anchor": "LinkedIn",
-          "href": "https://www.linkedin.com/in/laurent-vautier",
-          "icon": "linkedin"
-        }
-      ]
+      "anchors": []
     }
   },
   "logo": {
