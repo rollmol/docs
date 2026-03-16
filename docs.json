@@ -42,7 +42,7 @@
       "anchors": [
         {
           "anchor": "LinkedIn",
-          "href": "www.linkedin.com/in/laurent-vautier",
+          "href": "https://www.linkedin.com/in/laurent-vautier",
           "icon": "linkedin"
         }
       ]
@@ -62,7 +62,7 @@
   },
   "footer": {
     "socials": {
-      "linkedin": "https://linkedin.com/in/tonprofil"
+      "linkedin": "https://www.linkedin.com/in/laurent-vautier"
     }
   }
 }
