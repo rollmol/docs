@@ -8,6 +8,11 @@
     "dark": "#4F46E5"
   },
   "favicon": "/favicon.svg",
+  "seo": {
+	"og:title": "Tramio — Automatisation & IA pratique",
+	"og:description": "Ressource pédagogique francophone sur Make, Claude Code et les agents IA. Structurée, sans vidéo, auto-rythmée.",
+	"og:image": "https://tramio.fr/images/og-image.png"
+  },
   "navigation": {
     "tabs": [
       {
