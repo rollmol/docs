@@ -17,11 +17,11 @@
     "tabs": [
       {
         "tab": "Claude",
+        "landingPage": "index",
         "groups": [
           {
             "group": "Découvrir Claude",
             "pages": [
-              "index",
               "claude/101/portrait-assistant-ia",
               "claude/101/premiers-echanges",
               "claude/101/ajuster-evaluer-progresser"
@@ -103,17 +103,17 @@
           }
         ]
       },
-	  {
-		"tab": "Infra & IA locale",
-		"groups": [
-			{
-			  "group": "IA locale",
-			  "pages": [
-				"infra/open-notebook-ollama"
-			  ]
-			}
-		]
-	  }
+      {
+        "tab": "Infra & IA locale",
+        "groups": [
+          {
+            "group": "IA locale",
+            "pages": [
+              "infra/open-notebook-ollama"
+            ]
+          }
+        ]
+      }
     ],
     "global": {
       "anchors": []
@@ -127,7 +127,7 @@
     "links": [
       {
         "label": "À propos",
-        "href": "https://tramio.fr"
+        "href": "/about"
       }
     ]
   },
