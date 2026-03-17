@@ -1,0 +1,66 @@
+---
+title: "Apporter des modifications"
+description: "Techniques pratiques pour implémenter des modifications dans votre code avec Claude Code : captures d'écran, mode planification et modes de réflexion."
+---
+
+Modifier du code existant est le cas d'usage le plus courant de Claude Code. Cette page présente les techniques qui rendent ce travail précis et efficace.
+
+## Communiquer avec des captures d'écran
+
+Pour les modifications d'interface, une capture d'écran vaut mieux qu'une longue description. Plutôt que d'expliquer *où* se trouve un élément et *comment* il devrait changer, vous montrez directement.
+
+Pour coller une capture d'écran dans Claude Code :
+- **Windows/Linux** : `Ctrl+V`
+- **macOS** : `Cmd+V`
+
+Une fois l'image collée, décrivez la modification souhaitée. Claude identifie la zone concernée dans votre code et applique le changement.
+
+## Le mode planification
+
+Pour les tâches complexes qui touchent plusieurs fichiers ou composants, le mode planification donne à Claude le temps d'explorer votre projet avant d'agir.
+
+Activez-le avec **`Shift+Tab`** (deux fois si l'acceptation automatique est déjà active, une fois sinon).
+
+En mode planification, Claude :
+- Consulte davantage de fichiers dans votre projet
+- Élabore un plan détaillé avant toute modification
+- Vous présente exactement ce qu'il compte faire
+- Attend votre validation avant de continuer
+
+C'est l'occasion de corriger une mauvaise compréhension avant qu'elle ne se propage dans le code.
+
+## Les modes de réflexion
+
+Pour les problèmes logiques complexes — algorithmes, débogage difficile, architecture — Claude dispose de niveaux de raisonnement progressifs. Vous les activez en ajoutant une instruction à votre requête :
+
+| Instruction | Raisonnement |
+|---|---|
+| `think` | Standard |
+| `think more` | Étendu |
+| `think a lot` | Global |
+| `think longer` | Temporel étendu |
+| `ultrathink` | Maximum |
+
+Chaque niveau alloue plus de tokens à l'analyse. Les niveaux élevés produisent des réponses plus réfléchies mais consomment davantage de tokens — utilisez-les pour les problèmes qui le justifient.
+
+## Planification vs réflexion : quand utiliser quoi
+
+Ces deux modes adressent des types de complexité différents :
+
+**Mode planification** — quand la complexité est *organisationnelle* :
+- Modifications qui touchent plusieurs fichiers
+- Implémentations en plusieurs étapes
+- Refactorisations impliquant des dépendances entre composants
+
+**Mode réflexion** — quand la complexité est *intellectuelle* :
+- Problèmes de logique ou d'algorithme
+- Bugs difficiles à reproduire
+- Choix d'architecture avec des trade-offs non évidents
+
+Les deux modes peuvent être combinés. Notez qu'ils consomment tous les deux des tokens supplémentaires.
+
+## Autrement dit
+
+<Tip>
+Pour les petites modifications ciblées, une instruction directe suffit. Pour tout ce qui touche à plusieurs fichiers ou implique une réflexion approfondie, utilisez le mode planification ou les instructions `think` — vous économisez du temps en évitant les corrections de corrections.
+</Tip>

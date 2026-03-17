@@ -1,0 +1,87 @@
+---
+title: "Le SDK Claude Code"
+description: "Utiliser le SDK Claude Code pour intégrer les capacités de Claude dans vos propres scripts, pipelines CI/CD et outils de développement."
+---
+
+Le SDK Claude Code permet d'exécuter Claude Code par programmation depuis vos scripts et applications. C'est le même Claude Code que vous utilisez dans le terminal — avec les mêmes outils, les mêmes capacités — mais intégrable dans n'importe quel workflow automatisé.
+
+## Installation
+
+```bash
+npm install @anthropic-ai/claude-code
+```
+
+Le SDK est disponible pour TypeScript, Python et via la CLI.
+
+## Utilisation de base
+
+Voici un exemple TypeScript qui demande à Claude d'analyser un répertoire à la recherche de requêtes dupliquées :
+
+```typescript
+import { query } from "@anthropic-ai/claude-code";
+
+const prompt = "Cherche les requêtes en double dans le répertoire ./src/queries";
+
+for await (const message of query({ prompt })) {
+  console.log(JSON.stringify(message, null, 2));
+}
+```
+
+La fonction `query` retourne un flux de messages représentant la conversation brute entre votre instance Claude Code et le modèle. Le dernier message contient la réponse finale.
+
+## Permissions par défaut
+
+Par défaut, le SDK opère en **lecture seule** : il peut lire des fichiers, parcourir des répertoires, effectuer des recherches grep — mais il ne peut ni créer, ni modifier, ni supprimer de fichiers.
+
+Pour activer des permissions d'écriture :
+
+```typescript
+for await (const message of query({
+  prompt,
+  options: {
+    allowedTools: ["Edit", "Write", "MultiEdit"]
+  }
+})) {
+  console.log(JSON.stringify(message, null, 2));
+}
+```
+
+Vous pouvez également configurer les permissions dans `.claude/settings.json` pour un accès global au projet.
+
+## Héritage du contexte
+
+Le SDK hérite automatiquement de la configuration de l'instance Claude Code dans le même répertoire — y compris le `CLAUDE.md`, les hooks et les serveurs MCP configurés. Pas de configuration supplémentaire nécessaire.
+
+## Cas d'usage
+
+**Hooks Git** — analyser automatiquement les modifications avant un commit :
+
+```typescript
+// .git/hooks/pre-commit
+import { query } from "@anthropic-ai/claude-code";
+
+for await (const message of query({
+  prompt: "Analyse les fichiers modifiés dans ce commit. Signale tout problème évident.",
+  options: { allowedTools: [] } // lecture seule
+})) {
+  // traiter les messages
+}
+```
+
+**Pipelines CI/CD** — vérifications de qualité automatisées à chaque push.
+
+**Génération de documentation** — analyser le code source et produire ou mettre à jour la documentation.
+
+**Revues de code programmées** — déclencher une analyse à intervalles réguliers sur les parties critiques du code.
+
+**Hooks Claude Code avancés** — comme montré dans la page précédente, lancer une instance SDK depuis un hook PostToolUse pour analyser le travail d'une autre instance.
+
+## Ce que le SDK ne remplace pas
+
+Le SDK est conçu pour l'**automatisation et l'intégration** dans des pipelines plus larges. Pour le développement interactif au quotidien, l'interface terminale reste plus adaptée — elle offre la validation à la volée, l'interruption avec Échap, et le mode planification que le SDK ne reproduit pas nativement.
+
+## Autrement dit
+
+<Tip>
+Le SDK Claude Code, c'est la brique qui manquait pour intégrer l'intelligence de Claude dans vos outils existants sans passer par une API séparée. Si vous pouvez l'automatiser avec un script, vous pouvez y ajouter Claude.
+</Tip>

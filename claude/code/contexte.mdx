@@ -1,0 +1,78 @@
+---
+title: "Gérer le contexte avec CLAUDE.md"
+description: "Utiliser le fichier CLAUDE.md pour donner à Claude une connaissance permanente de votre projet et de vos conventions de développement."
+---
+
+Claude n'a pas de mémoire entre les sessions. À chaque nouvelle conversation, il repart de zéro — sans connaître votre architecture, vos conventions de code, ni les commandes spécifiques à votre projet.
+
+Le fichier `CLAUDE.md` résout ce problème. C'est un fichier texte que Claude lit au début de chaque session, ce qui lui permet d'arriver informé plutôt qu'à l'aveugle.
+
+## Générer un CLAUDE.md avec /init
+
+La façon la plus simple de créer un `CLAUDE.md` est de laisser Claude analyser votre projet lui-même. Depuis le répertoire racine de votre projet, lancez :
+
+```
+/init
+```
+
+Claude parcourt l'ensemble de votre code source et en extrait :
+
+- L'objectif et l'architecture générale du projet
+- Les commandes importantes (`npm run dev`, `make test`, etc.)
+- Les fichiers critiques et leur rôle
+- Les conventions et patterns de codage utilisés
+
+Il génère ensuite un résumé et vous demande l'autorisation de créer le fichier `CLAUDE.md`. Appuyez sur **Entrée** pour approuver chaque opération, ou utilisez **Maj+Tab** pour autoriser Claude à écrire librement pendant toute la session.
+
+## Ce que contient un CLAUDE.md
+
+Le fichier remplit deux fonctions distinctes :
+
+**Orientation** — Claude y trouve le contexte dont il a besoin pour travailler efficacement sur votre projet sans avoir à explorer tous les fichiers à chaque fois.
+
+**Instructions** — vous pouvez y ajouter des directives que Claude doit respecter systématiquement. Par exemple, si Claude a tendance à surcommenter votre code, ajoutez :
+
+```
+Commente uniquement le code complexe. Évite les commentaires évidents.
+```
+
+Tout ce qui figure dans `CLAUDE.md` est inclus dans chaque requête — c'est l'équivalent d'un prompt système permanent pour votre projet.
+
+## Le mode mémoire avec #
+
+Pour modifier votre `CLAUDE.md` de façon intelligente pendant une session, utilisez le préfixe `#` :
+
+```
+# Utilise toujours des arrow functions, jamais le mot-clé function
+```
+
+Claude intègre automatiquement cette instruction dans votre `CLAUDE.md` en la formulant correctement, sans que vous ayez à éditer le fichier manuellement.
+
+## Trois niveaux de CLAUDE.md
+
+Claude reconnaît trois emplacements de fichiers `CLAUDE.md`, chacun avec une portée différente :
+
+| Fichier | Portée | Partagé avec l'équipe |
+|---|---|---|
+| `CLAUDE.md` | Projet (racine) | Oui — versionné avec le code |
+| `CLAUDE.local.md` | Projet (personnel) | Non — dans `.gitignore` |
+| `~/.claude/CLAUDE.md` | Machine entière | Non — local uniquement |
+
+Le `CLAUDE.md` versionné contient les conventions partagées par toute l'équipe. Le `CLAUDE.local.md` vous permet d'ajouter vos préférences personnelles sans les imposer à vos collègues. Le fichier global s'applique à tous vos projets sur votre machine.
+
+## Référencer des fichiers depuis CLAUDE.md
+
+Vous pouvez mentionner des fichiers directement dans votre `CLAUDE.md` avec la syntaxe `@` :
+
+```
+Le schéma de base de données est défini dans @prisma/schema.prisma.
+Consulte ce fichier dès que tu travailles sur des modèles de données.
+```
+
+Le contenu de ce fichier est alors inclus automatiquement dans chaque requête — Claude n'a plus besoin de le rechercher à chaque fois.
+
+## Autrement dit
+
+<Tip>
+`CLAUDE.md` est votre briefing permanent. Plus il est précis sur votre architecture et vos conventions, moins vous avez à répéter les mêmes instructions d'une session à l'autre. Commencez par `/init`, puis affinez au fil de vos sessions en ajoutant les corrections récurrentes.
+</Tip>

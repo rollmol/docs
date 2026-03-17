@@ -1,0 +1,52 @@
+---
+title: "Comprendre les assistants de codage"
+description: "Comment fonctionnent les assistants de codage modernes, pourquoi ils ont besoin d'outils, et ce qui fait de Claude un modèle particulièrement efficace pour le développement."
+---
+
+Avant d'utiliser Claude Code, il vaut la peine de comprendre ce qui se passe sous le capot. Non par curiosité académique, mais parce que comprendre le mécanisme change la façon dont vous l'utilisez — et donc les résultats que vous obtenez.
+
+## Ce qu'un assistant de codage fait vraiment
+
+Quand vous confiez un bug à corriger à un assistant de codage, il suit un processus proche de celui d'un développeur humain :
+
+1. **Rassembler le contexte** — identifier le fichier concerné, comprendre l'erreur, localiser le code impliqué
+2. **Élaborer un plan** — décider comment corriger, quels tests lancer pour valider
+3. **Passer à l'action** — modifier les fichiers, exécuter les commandes, vérifier le résultat
+
+Les étapes 1 et 3 partagent une caractéristique commune : elles nécessitent d'interagir avec le monde extérieur — lire des fichiers, récupérer de la documentation, exécuter des commandes.
+
+## Le problème fondamental des LLMs
+
+Un modèle de langage pris isolément ne peut que traiter et produire du texte. Il ne peut pas lire un fichier sur votre disque, ni exécuter une commande dans votre terminal. Si vous demandiez directement à un LLM de lire `main.go`, il vous répondrait qu'il n'en est pas capable.
+
+C'est là qu'intervient le système d'**utilisation des outils**.
+
+## Comment fonctionne l'utilisation des outils
+
+L'assistant de codage agit comme intermédiaire entre vous et le modèle. Lorsque vous envoyez une requête, il ajoute automatiquement des instructions qui indiquent au modèle comment formuler des demandes d'actions.
+
+Le flux complet pour une requête comme *"Que contient le fichier main.go ?"* ressemble à ceci :
+
+1. Vous posez la question
+2. L'assistant ajoute les instructions d'utilisation des outils à votre requête
+3. Le modèle répond : `ReadFile: main.go`
+4. L'assistant lit le fichier et retourne son contenu au modèle
+5. Le modèle produit sa réponse finale en s'appuyant sur ce contenu
+
+Le modèle ne "lit" pas réellement le fichier — il génère une réponse textuelle soigneusement formatée que l'assistant sait interpréter comme une instruction. C'est une élégante solution de contournement d'une contrainte fondamentale.
+
+## Pourquoi la qualité d'utilisation des outils varie selon les modèles
+
+Tous les modèles de langage ne sont pas équivalents dans leur capacité à utiliser des outils. Certains comprennent mal quand et comment les appeler, produisent des formats incorrects, ou combinent maladroitement plusieurs outils pour des tâches complexes.
+
+La famille Claude (Opus, Sonnet, Haiku) est reconnue pour sa maîtrise de l'utilisation des outils. Cette compétence se traduit concrètement par plusieurs avantages dans Claude Code :
+
+- **Tâches complexes** — Claude peut combiner plusieurs outils en séquence pour résoudre des problèmes à plusieurs étapes, y compris des outils qu'il n'a jamais rencontrés auparavant
+- **Extensibilité** — vous pouvez ajouter de nouveaux outils via MCP et Claude s'y adapte sans configuration supplémentaire
+- **Sécurité** — Claude Code peut parcourir votre base de code sans avoir besoin de l'indexer ou d'en envoyer l'intégralité vers des serveurs externes
+
+## Autrement dit
+
+<Tip>
+Un assistant de codage, c'est un modèle de langage couplé à un système qui lui permet d'agir sur votre environnement. Le modèle génère des intentions, l'assistant les exécute. La qualité de l'outil dépend donc autant de la robustesse de ce système que des capacités du modèle lui-même — et Claude excelle dans les deux dimensions.
+</Tip>

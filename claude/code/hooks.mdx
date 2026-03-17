@@ -1,0 +1,158 @@
+---
+title: "Hooks"
+description: "Intercepter et contrôler les appels d'outils de Claude Code avant ou après leur exécution, pour automatiser des workflows et renforcer la sécurité."
+---
+
+Les hooks permettent d'exécuter vos propres commandes avant ou après que Claude utilise un outil. Ils s'intègrent dans le flux normal d'une session Claude Code sans intervention de votre part.
+
+## Comment fonctionnent les hooks
+
+Le flux d'une interaction Claude Code est : requête → décision d'utiliser un outil → exécution de l'outil → réponse.
+
+Les hooks s'insèrent à deux points de ce flux :
+
+- **PreToolUse** — s'exécute *avant* l'appel d'outil. Peut bloquer l'opération.
+- **PostToolUse** — s'exécute *après* l'appel d'outil. Ne peut pas bloquer, mais peut fournir du feedback à Claude.
+
+## Configuration
+
+Les hooks se définissent dans les fichiers de configuration de Claude Code :
+
+| Fichier | Portée |
+|---|---|
+| `~/.claude/settings.json` | Tous vos projets |
+| `.claude/settings.json` | Projet partagé (versionné) |
+| `.claude/settings.local.json` | Projet personnel (non versionné) |
+
+Structure de base :
+
+```json
+{
+  "PreToolUse": [
+    {
+      "matcher": "Read|Grep",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "/chemin/absolu/vers/hook.js"
+        }
+      ]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": "Write|Edit|MultiEdit",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "/chemin/absolu/vers/post-hook.js"
+        }
+      ]
+    }
+  ]
+}
+```
+
+<Warning>
+Utilisez toujours des **chemins absolus** pour vos scripts de hook. Les chemins relatifs exposent à des risques de sécurité (interception de chemin, injection de binaire). C'est une recommandation explicite de la documentation officielle.
+</Warning>
+
+## Ce que reçoit votre script
+
+Quand votre commande s'exécute, Claude lui envoie les détails de l'appel d'outil via l'entrée standard (stdin) au format JSON :
+
+```json
+{
+  "session_id": "2d6a1e4d-6...",
+  "transcript_path": "/Users/...",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Read",
+  "tool_input": {
+    "file_path": "/votre-projet/.env"
+  }
+}
+```
+
+Votre script lit ce JSON, l'analyse, puis communique sa décision via le code de sortie :
+
+- **Code 0** — autoriser l'opération
+- **Code 2** — bloquer l'opération (PreToolUse uniquement). Tout message écrit sur stderr est transmis à Claude comme explication.
+
+## Exemple concret : protéger les fichiers .env
+
+Un hook PreToolUse qui empêche Claude de lire les fichiers sensibles :
+
+```javascript
+async function main() {
+  const chunks = [];
+  for await (const chunk of process.stdin) {
+    chunks.push(chunk);
+  }
+  const toolArgs = JSON.parse(Buffer.concat(chunks).toString());
+
+  const readPath =
+    toolArgs.tool_input?.file_path || toolArgs.tool_input?.path || "";
+
+  if (readPath.includes(".env")) {
+    console.error("Accès refusé : lecture des fichiers .env interdite.");
+    process.exit(2);
+  }
+}
+
+main();
+```
+
+Ce script intercepte les opérations `Read` et `Grep` (selon le matcher configuré) et bloque celles qui ciblent un fichier `.env`. Claude reçoit le message d'erreur et comprend pourquoi l'opération a échoué.
+
+## Cas d'usage typiques
+
+**Sécurité** — interdire l'accès à certains fichiers ou répertoires sensibles.
+
+**Qualité de code** — lancer un formateur automatiquement après chaque modification de fichier.
+
+**Tests** — exécuter la suite de tests dès qu'un fichier source est modifié.
+
+**Vérification de types** — lancer `tsc --noEmit` après chaque édition et transmettre les erreurs à Claude pour correction immédiate.
+
+**Prévention de duplication** — utiliser le SDK Claude Code dans un hook PostToolUse pour analyser si du code nouvellement écrit duplique des fonctions existantes.
+
+## Déboguer un hook
+
+Pour comprendre exactement ce que reçoit votre script, créez un hook temporaire qui enregistre l'entrée dans un fichier :
+
+```json
+{
+  "PostToolUse": [
+    {
+      "matcher": "*",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "jq . > /tmp/hook-debug.json"
+        }
+      ]
+    }
+  ]
+}
+```
+
+Inspectez ensuite `/tmp/hook-debug.json` pour connaître la structure exacte des données reçues selon le type de hook et l'outil appelé.
+
+## Au-delà de PreToolUse et PostToolUse
+
+D'autres types de hooks sont disponibles pour des scénarios avancés :
+
+- `Notification` — s'exécute quand Claude attend une permission ou après 60 secondes d'inactivité
+- `Stop` — s'exécute quand Claude a terminé de répondre
+- `SubagentStop` — s'exécute quand un sous-agent termine sa tâche
+- `PreCompact` — s'exécute avant une opération de compactage
+- `UserPromptSubmit` — s'exécute quand vous soumettez une requête, avant que Claude ne la traite
+- `SessionStart` / `SessionEnd` — s'exécute au début et à la fin d'une session
+
+La structure JSON reçue en stdin varie selon le type de hook — utilisez le hook de débogage ci-dessus pour explorer chaque cas.
+
+## Autrement dit
+
+<Tip>
+Les hooks, c'est la différence entre subir ce que Claude fait et définir ce qu'il peut faire. Un hook bien conçu supprime une classe entière d'erreurs ou de risques, sans que vous ayez à y repenser.
+</Tip>

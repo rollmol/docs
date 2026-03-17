@@ -1,0 +1,76 @@
+---
+title: "Commandes personnalisées"
+description: "Créer vos propres commandes slash pour automatiser les workflows répétitifs et standardiser les pratiques de développement dans Claude Code."
+---
+
+Claude Code intègre des commandes natives accessibles avec `/`. Vous pouvez également créer vos propres commandes pour automatiser les tâches que vous exécutez régulièrement.
+
+## Créer une commande personnalisée
+
+La structure est simple : un dossier, un fichier Markdown, une commande.
+
+1. Repérez le dossier `.claude/` à la racine de votre projet
+2. Créez un sous-dossier `commands/`
+3. Créez un fichier Markdown dont le nom devient le nom de la commande
+
+Un fichier `audit.md` crée automatiquement la commande `/audit`. Redémarrez Claude Code pour qu'il reconnaisse la nouvelle commande.
+
+## Exemple : commande d'audit
+
+Voici un exemple concret — une commande qui audite les dépendances d'un projet Node.js :
+
+```markdown
+# Audit des dépendances
+
+Effectue un audit complet des dépendances du projet :
+
+1. Exécute `npm audit` pour identifier les paquets vulnérables
+2. Exécute `npm audit fix` pour appliquer les correctifs disponibles
+3. Lance la suite de tests pour vérifier que les mises à jour n'ont rien cassé
+4. Produit un rapport synthétique des vulnérabilités corrigées et de celles qui restent
+```
+
+Cette commande encapsule plusieurs étapes en une seule invocation : `/audit`.
+
+## Commandes avec arguments
+
+Les commandes peuvent accepter des paramètres via le placeholder `$ARGUMENTS`. Exemple avec une commande de génération de tests :
+
+```markdown
+Écris des tests complets pour : $ARGUMENTS
+
+Conventions :
+- Framework : Vitest avec React Testing Library
+- Emplacement : répertoire `__tests__` dans le même dossier que le fichier source
+- Nommage : `[nom_fichier].test.ts(x)`
+- Imports : préfixe `@/`
+
+Couverture attendue :
+- Cas nominaux
+- Cas limites
+- États d'erreur
+
+Priorité au test des comportements et des API publiques, pas des détails d'implémentation.
+```
+
+Vous invoquez ensuite cette commande avec le fichier cible :
+
+```
+/write_tests le fichier use-auth.ts dans le répertoire hooks
+```
+
+L'argument peut être n'importe quelle chaîne de caractères — un chemin de fichier, un nom de composant, une description de fonctionnalité.
+
+## Ce que les commandes personnalisées apportent
+
+Les commandes personnalisées sont particulièrement utiles pour :
+
+- **Standardiser les pratiques d'équipe** — tout le monde exécute les mêmes étapes dans le même ordre
+- **Encapsuler les conventions du projet** — les instructions spécifiques à votre codebase sont dans la commande, pas à réécrire à chaque fois
+- **Automatiser les workflows récurrents** — tests, déploiements, génération de documentation, revues de code
+
+## Autrement dit
+
+<Tip>
+Une bonne commande personnalisée, c'est une procédure que vous exécutez suffisamment souvent pour mériter d'être formalisée. Si vous vous retrouvez à donner les mêmes instructions à Claude plusieurs fois par semaine, transformez-les en commande.
+</Tip>

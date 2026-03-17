@@ -1,0 +1,83 @@
+---
+title: "Intégration GitHub"
+description: "Configurer Claude Code dans GitHub Actions pour automatiser les revues de pull requests et traiter les issues directement depuis GitHub."
+---
+
+Claude Code propose une intégration officielle avec GitHub Actions. Une fois configurée, Claude devient un membre actif de votre workflow GitHub : il répond aux mentions dans les issues et pull requests, et effectue des revues automatiques à chaque nouveau PR.
+
+## Configurer l'intégration
+
+Depuis Claude Code, lancez :
+
+```
+/install-github-app
+```
+
+Cette commande vous guide pas à pas pour :
+- Installer l'application Claude Code sur votre dépôt GitHub
+- Ajouter votre clé API Anthropic comme secret GitHub
+- Générer une pull request avec les fichiers de workflow
+
+Mergez cette PR et les deux GitHub Actions sont actives. Les fichiers de workflow apparaissent dans `.github/workflows/`.
+
+## Les deux workflows par défaut
+
+**Workflow de mention** — mentionnez `@claude` dans n'importe quelle issue ou pull request. Claude analyse la demande, accède à votre base de code et répond directement dans le fil de discussion.
+
+**Workflow de revue** — à chaque pull request créée, Claude effectue automatiquement une revue : analyse des modifications, évaluation de l'impact, rapport détaillé posté sur la PR.
+
+## Personnaliser les workflows
+
+Après avoir mergé la PR initiale, vous pouvez adapter les fichiers de workflow à votre projet.
+
+**Préparer l'environnement avant l'exécution :**
+
+```yaml
+- name: Project Setup
+  run: |
+    npm run setup
+    npm run dev:daemon
+```
+
+**Donner du contexte spécifique à Claude :**
+
+```yaml
+custom_instructions: |
+  Le projet est déjà configuré avec toutes les dépendances installées.
+  Le serveur tourne sur localhost:3000. Les logs sont dans logs.txt.
+  Pour interroger la base de données, utilise le CLI sqlite3.
+```
+
+**Configurer un serveur MCP comme Playwright :**
+
+```yaml
+mcp_config: |
+  {
+    "mcpServers": {
+      "playwright": {
+        "command": "npx",
+        "args": ["@playwright/mcp@latest", "--allowed-origins", "localhost:3000"]
+      }
+    }
+  }
+```
+
+## Permissions dans GitHub Actions
+
+Contrairement au développement local, GitHub Actions n'offre pas de mécanisme de validation interactive. Chaque outil — y compris les outils MCP — doit être listé explicitement dans `allowed_tools` :
+
+```yaml
+allowed_tools: "Bash(npm:*),Bash(sqlite3:*),mcp__playwright__browser_navigate,mcp__playwright__browser_click,mcp__playwright__browser_take_screenshot"
+```
+
+Listez uniquement les outils dont votre workflow a réellement besoin.
+
+## Bonnes pratiques
+
+Commencez avec les workflows par défaut et ajustez progressivement. Testez avec des tâches simples avant de confier des tâches complexes. Soyez explicite sur les permissions dès que vous utilisez des serveurs MCP.
+
+## Autrement dit
+
+<Tip>
+L'intégration GitHub fait de Claude un membre d'équipe asynchrone : il traite les issues pendant que vous dormez, relit le code pendant que vous préparez votre prochain PR. La valeur est proportionnelle à la précision de vos instructions personnalisées.
+</Tip>

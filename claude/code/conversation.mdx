@@ -1,0 +1,62 @@
+---
+title: "Contrôler la conversation"
+description: "Techniques pour garder Claude focalisé, corriger les erreurs répétitives et gérer le contexte de conversation sur des sessions longues."
+---
+
+Sur des sessions longues, la conversation accumule du contexte — utile d'un côté, potentiellement encombrant de l'autre. Claude Code propose plusieurs mécanismes pour rester maître de ce contexte.
+
+## Interrompre avec Échap
+
+Si Claude part dans une mauvaise direction ou tente de gérer trop de choses simultanément, appuyez sur **Échap** pour interrompre la réponse en cours.
+
+C'est particulièrement utile quand Claude élabore un plan détaillé pour plusieurs fonctions alors que vous vouliez qu'il se concentre sur une seule. Interrompez, recentrez, puis continuez.
+
+## Corriger les erreurs répétitives
+
+Quand Claude commet la même erreur dans plusieurs conversations différentes, la technique la plus efficace est :
+
+1. Appuyez sur **Échap** pour interrompre
+2. Utilisez le préfixe `#` pour ajouter une correction dans `CLAUDE.md`
+3. Reprenez la conversation avec le contexte corrigé
+
+Cette correction est alors persistante : Claude ne répétera plus cette erreur dans les sessions suivantes sur ce projet.
+
+## Rembobiner la conversation
+
+Après un long échange, certaines parties de l'historique peuvent devenir contre-productives — par exemple, une longue séquence d'essais infructueux que Claude risque de reproduire.
+
+Appuyez deux fois sur **Échap** pour naviguer dans l'historique des messages et reprendre la conversation à partir d'un point antérieur. Vous conservez la compréhension que Claude a construite de votre projet, tout en supprimant les échanges parasites.
+
+## /compact — résumer sans perdre
+
+La commande `/compact` résume l'intégralité de l'historique de conversation en préservant les informations clés que Claude a acquises sur votre projet.
+
+Utilisez `/compact` quand :
+- La session a été longue et riche en informations utiles
+- Vous souhaitez continuer sur une tâche connexe sans repartir de zéro
+- Claude commence à montrer des signes de confusion liés à un contexte trop chargé
+
+## /clear — repartir de zéro
+
+La commande `/clear` efface complètement l'historique de conversation.
+
+Utilisez `/clear` quand :
+- Vous passez à une tâche sans rapport avec la précédente
+- Le contexte accumulé risque d'induire Claude en erreur
+- Vous voulez recommencer proprement
+
+## Mentionner des fichiers avec @
+
+Pour orienter Claude vers des fichiers spécifiques sans lui demander d'explorer l'ensemble du projet, utilisez la syntaxe `@` suivie du chemin ou du nom du fichier :
+
+```
+Comment fonctionne le système d'authentification ? @auth
+```
+
+Claude vous propose une liste de fichiers correspondants, puis inclut le fichier sélectionné dans le contexte de la requête. C'est plus précis qu'une question ouverte et plus rapide que de lui faire parcourir tout le projet.
+
+## Autrement dit
+
+<Tip>
+La gestion du contexte, c'est comme la gestion de la mémoire de travail d'un développeur : trop peu et il manque d'informations, trop et il perd le fil. `/compact` quand vous changez de tâche mais restez dans le même périmètre, `/clear` quand vous changez de sujet, `@` quand vous voulez être précis sur ce que Claude doit regarder.
+</Tip>

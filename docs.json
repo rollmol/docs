@@ -57,6 +57,37 @@
         ]
       },
       {
+        "tab": "Claude Code",
+        "groups": [
+          {
+            "group": "Comprendre et installer",
+            "pages": [
+              "claude/code/index",
+              "claude/code/comprendre",
+              "claude/code/installation",
+              "claude/code/contexte"
+            ]
+          },
+          {
+            "group": "Travailler avec Claude Code",
+            "pages": [
+              "claude/code/modifications",
+              "claude/code/conversation",
+              "claude/code/commandes",
+              "claude/code/mcp",
+              "claude/code/github"
+            ]
+          },
+          {
+            "group": "Automatiser et étendre",
+            "pages": [
+              "claude/code/hooks",
+              "claude/code/sdk"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Make",
         "groups": [
           {

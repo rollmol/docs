@@ -1,0 +1,66 @@
+---
+title: "Installation et configuration"
+description: "Installer Claude Code sur votre machine et le lancer pour la première fois."
+---
+
+Claude Code s'installe en ligne de commande. La procédure varie légèrement selon votre système d'exploitation.
+
+## Installation
+
+<Tabs>
+  <Tab title="macOS (Homebrew)">
+    ```bash
+    brew install --cask claude-code
+    ```
+  </Tab>
+  <Tab title="macOS / Linux / WSL">
+    ```bash
+    curl -fsSL https://claude.ai/install.sh | bash
+    ```
+  </Tab>
+  <Tab title="Windows (invite de commandes)">
+    ```cmd
+    curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
+    ```
+  </Tab>
+</Tabs>
+
+La documentation officielle est disponible sur [code.claude.com/docs/en/quickstart](https://code.claude.com/docs/en/quickstart).
+
+## Premier lancement
+
+Une fois l'installation terminée, lancez Claude Code depuis le répertoire de votre projet :
+
+```bash
+cd votre-projet
+claude
+```
+
+Au premier démarrage, Claude vous demande de vous authentifier. Suivez les instructions affichées dans le terminal — vous serez redirigé vers votre compte Anthropic pour autoriser l'accès.
+
+## Authentification via AWS Bedrock ou Google Vertex
+
+Si vous utilisez Claude via AWS Bedrock ou Google Cloud Vertex plutôt que directement via l'API Anthropic, une configuration supplémentaire est nécessaire :
+
+- AWS Bedrock : [code.claude.com/docs/en/amazon-bedrock](https://code.claude.com/docs/en/amazon-bedrock)
+- Google Cloud Vertex AI : [code.claude.com/docs/en/google-vertex-ai](https://code.claude.com/docs/en/google-vertex-ai)
+
+## Vérifier l'installation
+
+Pour confirmer que Claude Code est correctement installé et authentifié :
+
+```bash
+claude --version
+```
+
+Vous pouvez également lancer une première question simple depuis n'importe quel répertoire :
+
+```bash
+claude "Combien de fichiers contient ce répertoire ?"
+```
+
+## Autrement dit
+
+<Tip>
+L'installation prend moins de deux minutes. Le plus important est de lancer Claude Code depuis le répertoire racine de votre projet : c'est le contexte de départ depuis lequel il va explorer votre base de code.
+</Tip>

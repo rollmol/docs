@@ -1,0 +1,65 @@
+---
+title: "Étendre Claude Code avec MCP"
+description: "Ajouter des serveurs MCP à Claude Code pour lui donner accès à de nouveaux outils : navigateur, base de données, services cloud."
+---
+
+Claude Code peut être étendu via des serveurs MCP (Model Context Protocol). Ces serveurs s'exécutent localement ou à distance et exposent de nouveaux outils que Claude peut utiliser comme n'importe quel outil natif.
+
+## L'exemple Playwright
+
+Playwright est l'un des serveurs MCP les plus populaires pour le développement web. Il donne à Claude la capacité de contrôler un navigateur — naviguer vers des URLs, cliquer, remplir des formulaires, prendre des captures d'écran, lire la console.
+
+Pour l'ajouter à Claude Code, exécutez cette commande dans votre terminal (pas dans Claude Code) :
+
+```bash
+claude mcp add playwright npx @playwright/mcp@latest
+```
+
+Cette commande nomme le serveur `playwright` et fournit la commande de démarrage. Claude Code lancera automatiquement ce serveur au démarrage.
+
+## Gérer les permissions MCP
+
+Lors de la première utilisation d'un outil MCP, Claude demande une autorisation. Pour pré-autoriser un serveur et éviter ces confirmations, ajoutez-le dans `.claude/settings.local.json` :
+
+```json
+{
+  "permissions": {
+    "allow": ["mcp__playwright"],
+    "deny": []
+  }
+}
+```
+
+Notez le double underscore dans `mcp__playwright` — c'est la convention de nommage des outils MCP dans Claude Code.
+
+## Ce que Playwright permet concrètement
+
+Avec Playwright, Claude peut voir le résultat visuel réel de votre application, pas seulement le code. Cela ouvre des workflows impossibles autrement.
+
+Exemple : améliorer la qualité de génération de composants UI en demandant à Claude de :
+
+```
+Ouvre localhost:3000, génère un composant de test, 
+analyse le rendu visuel et mets à jour le prompt de génération 
+dans @src/lib/prompts/generation.tsx pour produire de meilleurs 
+résultats à l'avenir.
+```
+
+Claude navigue vers votre application, génère un composant, examine le résultat, puis modifie directement le fichier de prompt. Boucle de feedback visuelle intégrée.
+
+## L'écosystème MCP
+
+Playwright n'est qu'un exemple. L'écosystème MCP couvre de nombreux domaines :
+
+- **Bases de données** — requêtes SQL directes depuis Claude Code
+- **APIs** — tests et monitoring sans quitter le terminal
+- **Services cloud** — interactions avec AWS, GCP, Azure
+- **Outils de développement** — intégration avec votre chaîne d'outils existante
+
+Pour explorer les serveurs MCP disponibles : [modelcontextprotocol.io](https://modelcontextprotocol.io)
+
+## Autrement dit
+
+<Tip>
+MCP transforme Claude Code d'assistant de code en partenaire de développement complet. Chaque serveur MCP que vous ajoutez est un nouvel ensemble de capacités disponibles immédiatement, sans configuration supplémentaire de votre part.
+</Tip>
