@@ -1,0 +1,417 @@
+---
+title: Installer Open Notebook + Ollama sur Linux/WSL2
+description: Fais tourner ton propre NotebookLM en local — sans cloud, sans abonnement, sans que tes données quittent ta machine.
+---
+
+Tu veux faire tourner ton propre NotebookLM sans envoyer tes données à Google ?
+Ce guide t'accompagne pas-à-pas pour installer Open Notebook + Ollama sur Linux ou WSL2. En 30 minutes, tu auras une IA locale, privée, et gratuite.
+
+**Au programme :**
+- Installer Ollama et télécharger les modèles
+- Déployer Open Notebook avec Docker
+- Configurer et tester
+- Bonus : CLI et API pour tes automatisations
+
+---
+
+## Prérequis
+
+| Composant | Minimum | Recommandé |
+|-----------|---------|------------|
+| RAM | 8 Go | 16 Go |
+| GPU | — | NVIDIA (6 Go+ VRAM) |
+| Stockage | 10 Go | 20 Go |
+| OS | Ubuntu 20.04+ / WSL2 | Ubuntu 22.04 |
+
+Vérifie le GPU sous WSL2 :
+
+```bash
+nvidia-smi
+```
+
+<Warning>
+**`nvidia-smi` ne fonctionne pas ?** Plusieurs cas possibles :
+
+- **Pas de GPU NVIDIA** → Ollama fonctionnera en mode CPU (beaucoup plus lent, mais ça marche). Passe directement à l'étape 1.
+- **GPU NVIDIA mais commande introuvable** → Les drivers ne sont pas installés ou pas à jour.
+  - Sous WSL2 : installe les derniers drivers NVIDIA *côté Windows* (pas dans WSL). Redémarre ensuite WSL avec `wsl --shutdown` puis relance.
+  - Sous Linux natif : `sudo apt install nvidia-driver-535` (ou version plus récente)
+- **GPU AMD ou Intel** → `nvidia-smi` est spécifique à NVIDIA. Pour AMD, Ollama supporte ROCm mais la config est plus complexe. Pour Intel, c'est CPU only pour l'instant.
+</Warning>
+
+---
+
+## Étape 1 — Installer Ollama
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+Vérifie l'installation :
+
+```bash
+ollama --version
+```
+
+<Tip>
+Le script crée automatiquement un service systemd. Ollama démarrera donc automatiquement au boot.
+</Tip>
+
+---
+
+## Étape 2 — Télécharger les modèles
+
+```bash
+ollama pull mistral
+ollama pull nomic-embed-text
+```
+
+| Modèle | Usage | VRAM |
+|--------|-------|------|
+| mistral | Chat, génération | ~4-5 Go |
+| nomic-embed-text | Embeddings, recherche | ~300 Mo |
+
+---
+
+## Étape 3 — Exposer Ollama pour Docker
+
+<Tip>
+Par défaut, Ollama n'écoute que sur `localhost`. On crée un fichier "override" pour le rendre accessible à Docker, sans modifier le service original.
+</Tip>
+
+```bash
+sudo mkdir -p /etc/systemd/system/ollama.service.d
+sudo vi /etc/systemd/system/ollama.service.d/override.conf
+```
+
+Contenu du fichier :
+
+```ini
+[Service]
+Environment="OLLAMA_HOST=0.0.0.0"
+```
+
+Applique les changements :
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart ollama
+```
+
+Vérifie :
+
+```bash
+curl http://localhost:11434/api/tags
+```
+
+---
+
+## Étape 4 — Installer Docker Compose v2
+
+<Tip>
+Si tu as déjà Docker Compose v2 (`docker compose version`), passe directement à l'étape 5.
+</Tip>
+
+```bash
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt update
+sudo apt install docker-compose-plugin
+```
+
+Vérifie :
+
+```bash
+docker compose version
+```
+
+---
+
+## Étape 5 — Déployer Open Notebook
+
+```bash
+mkdir ~/open-notebook && cd ~/open-notebook
+```
+
+Crée le fichier `docker-compose.yml` :
+
+```yaml
+services:
+  open_notebook:
+    image: lfnovo/open_notebook:v1-latest-single
+    ports:
+      - "8502:8502"
+      - "5055:5055"
+    env_file:
+      - ./docker.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    pull_policy: always
+    volumes:
+      - ./notebook_data:/app/data
+      - ./surreal_single_data:/mydata
+    restart: always
+```
+
+Crée le fichier `docker.env` :
+
+```bash
+OLLAMA_API_BASE=http://host.docker.internal:11434
+
+SURREAL_URL="ws://localhost:8000/rpc"
+SURREAL_USER="root"
+SURREAL_PASSWORD="root"
+SURREAL_NAMESPACE="open_notebook"
+SURREAL_DATABASE="production"
+```
+
+Lance :
+
+```bash
+docker compose up -d
+```
+
+---
+
+## Étape 6 — Configurer les modèles
+
+1. Ouvre http://localhost:8502
+2. Va dans **Models**
+3. Configure les trois entrées suivantes :
+
+| Type | Provider | Modèle |
+|------|----------|--------|
+| Chat Model | Ollama | mistral:latest |
+| Transformation Model | Ollama | mistral:latest |
+| Embedding Model | Ollama | nomic-embed-text:latest |
+
+<Tip>
+C'est prêt ! Tu peux créer ton premier notebook et ajouter des sources (PDF, URL, texte...).
+</Tip>
+
+---
+
+## Utilisation
+
+- **Interface Web** : http://localhost:8502
+- **API Open Notebook (Swagger)** : http://localhost:5055/docs
+
+---
+
+## Commandes utiles
+
+```bash
+# Statut des conteneurs
+docker compose ps
+
+# Logs
+docker compose logs -f
+
+# Arrêter
+docker compose down
+
+# Mettre à jour
+docker compose pull && docker compose up -d
+
+# Surveiller le GPU
+watch -n 1 nvidia-smi
+```
+
+---
+
+## Utiliser Ollama en ligne de commande
+
+<Tip>
+Pratique pour tester rapidement un prompt sans ouvrir l'interface web.
+</Tip>
+
+### Chat interactif
+
+```bash
+ollama run mistral
+```
+
+Tu entres dans un mode conversationnel. Tape `/bye` pour quitter.
+
+### Question unique (one-shot)
+
+```bash
+echo "Explique-moi Docker en 3 phrases" | ollama run mistral
+```
+
+### Autres commandes Ollama
+
+```bash
+# Lister les modèles installés
+ollama list
+
+# Télécharger un nouveau modèle
+ollama pull llama3.2:3b
+
+# Supprimer un modèle
+ollama rm mistral
+
+# Infos sur un modèle
+ollama show mistral
+```
+
+---
+
+## API Ollama — intégrations et automatisations
+
+L'API Ollama permet d'intégrer l'IA locale dans tes automatisations (Make, n8n, scripts...).
+
+### Générer une réponse (completion)
+
+```bash
+curl http://localhost:11434/api/generate -d '{
+  "model": "mistral",
+  "prompt": "Résume le rôle de Docker en 2 phrases",
+  "stream": false
+}'
+```
+
+<Tip>
+Le paramètre `stream: false` retourne la réponse complète d'un coup. Avec `stream: true`, la réponse arrive token par token (SSE) — non compatible avec Make.
+</Tip>
+
+### Chat avec historique
+
+```bash
+curl http://localhost:11434/api/chat -d '{
+  "model": "mistral",
+  "messages": [
+    {"role": "user", "content": "Qu est-ce que Docker ?"},
+    {"role": "assistant", "content": "Docker est une plateforme de conteneurisation..."},
+    {"role": "user", "content": "Comment créer un container ?"}
+  ],
+  "stream": false
+}'
+```
+
+### Générer des embeddings
+
+```bash
+curl http://localhost:11434/api/embeddings -d '{
+  "model": "nomic-embed-text",
+  "prompt": "Texte à vectoriser"
+}'
+```
+
+### Endpoints de diagnostic
+
+```bash
+# Lister les modèles disponibles
+curl http://localhost:11434/api/tags
+
+# Vérifier qu'Ollama tourne
+curl http://localhost:11434/
+# Réponse attendue : "Ollama is running"
+```
+
+### Intégration Make
+
+Dans Make, utilise un module **HTTP > Make a request** :
+
+| Paramètre | Valeur |
+|-----------|--------|
+| URL | `http://ton-ip:11434/api/generate` |
+| Method | POST |
+| Headers | `Content-Type: application/json` |
+| Body | `{"model": "mistral", "prompt": "{{prompt}}", "stream": false}` |
+
+La réponse JSON contient le champ `response` avec le texte généré. Tu peux chaîner ce module avec Notion, Google Sheets, Slack, ou n'importe quel autre connecteur Make.
+
+---
+
+## Aller plus loin
+
+### Voir les logs Ollama
+
+```bash
+journalctl -e -u ollama
+```
+
+### Installer une version spécifique
+
+```bash
+curl -fsSL https://ollama.com/install.sh | OLLAMA_VERSION=0.5.0 sh
+```
+
+Utile si une nouvelle version pose problème. Liste des versions : https://github.com/ollama/ollama/releases
+
+### Désinstaller Ollama proprement
+
+```bash
+# Arrêter le service
+sudo systemctl stop ollama
+sudo systemctl disable ollama
+sudo rm /etc/systemd/system/ollama.service
+
+# Supprimer le binaire
+sudo rm $(which ollama)
+
+# Supprimer les librairies
+sudo rm -rf /usr/local/lib/ollama
+
+# Supprimer les modèles (optionnel)
+sudo rm -rf /usr/share/ollama
+```
+
+### Support GPU AMD (ROCm)
+
+Ollama supporte les GPU AMD via ROCm, mais la configuration est plus complexe. Voir la [doc officielle](https://docs.ollama.com/linux).
+
+---
+
+## Dépannage
+
+### Problème de permissions sur les volumes
+
+```bash
+sudo chown -R $USER:$USER ./notebook_data
+sudo chown -R $USER:$USER ./surreal_single_data
+```
+
+### Ollama non accessible depuis Docker
+
+```bash
+# Vérifier qu'Ollama écoute bien
+curl http://localhost:11434/api/tags
+
+# Vérifier la config
+sudo systemctl show ollama | grep OLLAMA_HOST
+```
+
+### Container Open Notebook qui ne démarre pas
+
+```bash
+# Voir les logs
+docker compose logs -f
+
+# Redémarrer
+docker compose down && docker compose up -d
+```
+
+---
+
+## Ressources
+
+- [Open Notebook GitHub](https://github.com/lfnovo/open-notebook)
+- [Documentation Ollama](https://docs.ollama.com/linux)
+- [Modèles disponibles pour Ollama](https://ollama.com/library)
+
+---
+
+## Autrement dit
+
+<Tip>
+Ollama fait tourner des modèles de langage directement sur ta machine. Open Notebook est l'interface qui les rend utilisables comme NotebookLM — sans cloud, sans abonnement, sans que tes données quittent ton ordinateur.
+</Tip>
