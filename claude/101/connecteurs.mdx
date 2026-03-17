@@ -1,0 +1,84 @@
+---
+title: "Les connecteurs : relier Claude à vos outils"
+description: "Par défaut, Claude ne sait rien de vos outils ni de vos données. Les connecteurs changent ça — ils lui donnent accès aux mêmes ressources que vous, directement depuis la conversation."
+---
+
+## Ce que c'est
+
+Par défaut, Claude opère en vase clos : il ne connaît ni vos fichiers, ni vos outils, ni vos données. Les connecteurs changent cette équation. Ils lui donnent accès aux mêmes ressources que vous, directement depuis la conversation — sans copier-coller, sans intermédiaire.
+
+Le standard technique qui rend tout cela possible s'appelle le **MCP** (Model Context Protocol). C'est un protocole ouvert qui définit une interface commune entre Claude et les applications tierces — une sorte de prise universelle permettant à un même appareil de se brancher partout. N'importe quel développeur peut créer un connecteur pour n'importe quel outil en suivant ce standard.
+
+---
+
+## Ce que les connecteurs permettent
+
+Selon le connecteur et les autorisations que vous accordez, Claude peut effectuer des recherches dans vos fichiers, récupérer des documents, analyser des données, créer du contenu, mettre à jour des enregistrements et déclencher des actions dans vos applications — sans que vous quittiez la conversation.
+
+---
+
+## Deux familles de connecteurs
+
+**Les connecteurs web** relient Claude à des services cloud : Google Drive, Notion, Slack, Asana, Stripe, et bien d'autres. Ils fonctionnent depuis l'interface web comme depuis l'application de bureau.
+
+**Les extensions de bureau** s'exécutent localement sur votre machine via l'application Claude. Elles permettent à Claude d'interagir avec vos fichiers locaux, votre système de fichiers, et des applications natives comme Figma.
+
+---
+
+## Trouver et connecter un service
+
+Anthropic maintient un répertoire de connecteurs disponibles sur [claude.ai/directory](https://claude.ai/directory), organisé en deux onglets (Web et Extensions de bureau). Vous pouvez aussi y accéder directement depuis n'importe quelle conversation via le bouton "Recherche et outils" en bas à gauche.
+
+**Pour un connecteur web :**
+
+1. Trouvez le connecteur dans le répertoire
+2. Cliquez sur "Connecter"
+3. Authentifiez-vous avec vos identifiants existants
+4. Examinez les autorisations demandées et validez
+5. Testez en posant une question simple à Claude sur ce service
+
+**Pour une extension de bureau :**
+
+1. Téléchargez l'application Claude Desktop si ce n'est pas déjà fait
+2. Allez dans **Paramètres > Extensions**
+3. Installez l'extension et suivez les étapes de configuration spécifiques
+
+---
+
+## Dans la pratique
+
+Une fois vos outils connectés, Claude en tient compte naturellement. Quelques exemples par catégorie :
+
+**Gestion de projet** (Asana, Linear, Jira) — *"Quelles sont mes tâches prioritaires cette semaine ?"*, *"Résume l'état d'avancement du projet de refonte."*
+
+**Communication** (Slack, Gmail) — *"Retrouve la conversation où on a discuté du contrat fournisseur."*, *"Qu'a décidé l'équipe sur le calendrier hier ?"*
+
+**Documentation** (Notion, Google Drive, Confluence) — *"Que dit notre guide de style sur l'utilisation des abréviations ?"*, *"Résume les notes de la dernière réunion produit."*
+
+**Outils métier** (Stripe, Salesforce) — *"Montre-moi les tendances de revenus du trimestre dernier."*, *"Quel est le statut du dossier Dubois & Associés ?"*
+
+---
+
+## Ce que Claude peut voir — et ce qu'il ne peut pas voir
+
+Un connecteur ne donne pas à Claude un accès illimité. Il voit uniquement ce à quoi vous avez accès. Connecter votre messagerie professionnelle ne lui donne pas accès à la boîte de vos collègues — seulement à la vôtre.
+
+Les autorisations sont spécifiques à chaque connecteur, et vous pouvez les révoquer à tout moment depuis les paramètres de Claude ou depuis les paramètres de sécurité du service concerné.
+
+## Autrement dit
+
+<Tip>
+Sans connecteurs, vous êtes un intermédiaire : vous copiez des informations depuis vos outils, vous les collez dans Claude, vous recopiez le résultat ailleurs. Avec des connecteurs, Claude devient un collaborateur dans votre environnement réel — il sait où chercher, et il y va directement.
+</Tip>
+
+---
+
+## Exercices pratiques
+
+**Exercice 1 — Connecter un premier service**
+
+Choisissez un outil que vous utilisez quotidiennement (Google Drive, Notion, Slack…). Connectez-le via le répertoire Claude. Posez ensuite une question qui nécessite d'y accéder — par exemple *"Trouve le dernier document sur [sujet]"* ou *"Résume les messages récents sur [canal]"*. Évaluez la pertinence de la réponse.
+
+**Exercice 2 — Mesurer le gain de temps**
+
+Choisissez une tâche habituelle qui vous oblige à naviguer entre plusieurs outils pour rassembler des informations. Faites-la une fois manuellement, puis demandez à Claude de la faire avec ses connecteurs. Notez la différence en termes de temps et de qualité du résultat.

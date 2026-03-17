@@ -1,0 +1,93 @@
+---
+title: "Les projets : mémoire et contexte persistants"
+description: "Un projet Claude, c'est un espace de travail dédié où Claude connaît déjà votre contexte — documents de référence, instructions permanentes, historique partagé. Fini de tout réexpliquer à chaque conversation."
+---
+
+## Ce que c'est
+
+Un projet est un espace de travail persistant dans lequel Claude dispose d'une mémoire propre. Vous y chargez des documents, vous y définissez des règles de comportement, et ces éléments s'appliquent automatiquement à toutes les conversations du projet — sans que vous ayez à les répéter.
+
+---
+
+## Ce qui change par rapport à une conversation ordinaire
+
+Dans une conversation classique, Claude repart de zéro à chaque fois. Dans un projet, il arrive avec le contexte déjà chargé : les fichiers que vous avez déposés, les instructions que vous avez rédigées, et l'historique des échanges précédents.
+
+Un projet repose sur trois éléments :
+
+**Une base de connaissances** — les fichiers que vous téléversez (guides de marque, rapports, comptes-rendus, spécifications techniques, exemples de livrables). Claude y fait référence automatiquement dans toutes les conversations du projet.
+
+**Des instructions permanentes** — vous définissez une fois pour toutes comment Claude doit se comporter : ton, niveau d'expertise attendu, format de réponse, règles métier. Ces instructions s'appliquent à chaque échange sans que vous ayez à les rappeler.
+
+**Un espace collaboratif** — pour les abonnés Team et Enterprise, un projet peut être partagé avec des collègues. Tout le monde travaille avec le même contexte, les mêmes documents, les mêmes règles.
+
+---
+
+## Quand créer un projet
+
+Un projet devient utile dès que vous travaillez sur un sujet continu plutôt qu'une question ponctuelle. Quelques signaux concrets :
+
+- Vous joignez les mêmes fichiers à chaque nouvelle conversation
+- Vous commencez systématiquement par réexpliquer qui vous êtes, ce que vous faites, dans quel contexte
+- Plusieurs personnes ont besoin du même contexte partagé pour travailler avec Claude
+
+---
+
+## Mettre un projet en place
+
+**Étape 1 — Créer le projet**
+
+Depuis la barre latérale de Claude.ai, cliquez sur "Projets" puis sur "+ Nouveau projet". Donnez-lui un nom parlant — pas pour Claude, mais pour vous et vos éventuels collaborateurs.
+
+**Étape 2 — Rédiger les instructions**
+
+C'est l'étape la plus déterminante. Vos instructions peuvent couvrir le contexte du projet, des consignes de procédure, des préférences de ton et de style, des exigences spécifiques. Soyez précis : des instructions vagues produisent des résultats incohérents.
+
+Quelques formulations utiles :
+- *"Ce projet concerne la création de contenus marketing pour un logiciel B2B destiné aux PME industrielles."*
+- *"Utilise toujours un ton direct et professionnel. Pas de jargon inutile."*
+- *"Commence toujours par proposer un plan avant de rédiger."*
+
+**Étape 3 — Alimenter la base de connaissances**
+
+Ajoutez les documents dont Claude devra tenir compte : PDF, DOCX, CSV, TXT, HTML et autres formats courants sont acceptés. Vous pouvez aussi connecter Google Drive pour lier des documents directement.
+
+<Tip>
+Claude s'appuie sur les noms de fichiers pour identifier ce qui est pertinent dans votre base de connaissances. Un fichier bien nommé sera mieux exploité qu'un fichier générique comme "document_final_v3".
+</Tip>
+
+---
+
+## La mise à l'échelle automatique
+
+Quand le volume de documents dépasse la capacité de la fenêtre de contexte, Claude bascule automatiquement en mode RAG (Retrieval Augmented Generation). Au lieu de charger l'ensemble des fichiers en mémoire, il récupère uniquement les passages pertinents pour chaque question. Cela multiplie la capacité du projet sans dégradation visible de la qualité des réponses. Un indicateur visuel s'affiche quand ce mode est actif.
+
+---
+
+## Partager un projet (Team et Enterprise)
+
+Trois niveaux d'accès sont disponibles :
+
+- **Lecture seule** — les membres peuvent consulter et poser des questions, mais pas modifier les instructions ni la base de connaissances
+- **Membre éditeur** — accès complet à la collaboration, y compris la modification des instructions et des documents
+- **Propriétaire** — contrôle total, y compris la gestion des accès et la visibilité du projet
+
+---
+
+## Autrement dit
+
+<Tip>
+Un projet, c'est comme préparer une salle de réunion avant que les gens arrivent : les documents sont sur la table, le contexte est posé, les règles du jeu sont claires. Plus besoin de passer dix minutes à remettre tout le monde dans le bain à chaque échange.
+</Tip>
+
+---
+
+## Exercices pratiques
+
+**Exercice 1 — Créer votre premier projet**
+
+Identifiez une tâche récurrente dans votre travail qui implique toujours les mêmes documents ou le même contexte. Créez un projet Claude dédié, rédigez des instructions précises, et chargez les fichiers de référence. Lancez ensuite une conversation dans ce projet et observez la différence par rapport à une conversation ordinaire.
+
+**Exercice 2 — Tester la cohérence des instructions**
+
+Dans votre projet, posez deux questions distinctes sur un même sujet — par exemple une demande de rédaction et une demande d'analyse. Vérifiez que le ton, le format et le style restent cohérents entre les deux réponses. Si ce n'est pas le cas, affinez vos instructions jusqu'à obtenir le comportement attendu.

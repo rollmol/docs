@@ -1,0 +1,66 @@
+---
+title: "Code : développer avec Claude dans vos fichiers"
+description: "Le mode Code intègre Claude directement dans votre projet — lecture, modification, exécution — avec un contrôle précis sur le niveau d'autonomie que vous lui accordez."
+---
+
+## Ce que c'est
+
+Le mode Code amène Claude dans votre environnement de développement réel. Pas un assistant qui répond à côté : Claude lit votre code existant, propose des modifications sous forme de diff visuel, exécute des commandes dans un terminal intégré, et s'appuie sur Git pour tracer chaque changement. Vous restez aux commandes — c'est vous qui décidez ce qui s'applique.
+
+---
+
+## Comment ça fonctionne
+
+Le mode Code repose sur le même moteur que Cowork (Claude Code), mais avec un périmètre d'accès très différent. Là où Cowork opère dans un espace isolé limité aux dossiers que vous lui confiez, le mode Code s'exécute avec un accès complet à votre projet, votre terminal et vos outils de développement.
+
+En pratique : chaque modification est présentée sous forme de diff avant d'être appliquée, le terminal affiche les commandes en temps réel, et Git conserve un historique de tout ce qui a été fait — vous pouvez revenir en arrière à n'importe quel point.
+
+---
+
+## Local ou distant
+
+Vous choisissez l'environnement d'exécution selon la nature du projet :
+
+**En local** — Vous sélectionnez un dossier sur votre machine. Claude travaille directement avec ces fichiers, accède aux outils installés localement, et peut lancer un serveur de développement que vous prévisualisez dans votre navigateur. Adapté aux projets du quotidien et aux expérimentations rapides.
+
+**À distance** — Vous connectez un dépôt GitHub et Claude travaille dans un environnement cloud. Les sessions persistent même si vous fermez l'application — vous pouvez démarrer une refactorisation importante et y revenir le lendemain. Adapté aux projets de grande taille ou quand vous préférez externaliser l'exécution hors de votre machine.
+
+---
+
+## Trois niveaux d'autonomie
+
+C'est le levier central du mode Code : vous définissez jusqu'où Claude peut aller sans validation explicite.
+
+**Mode Ask** — Claude propose chaque modification et attend votre approbation. Vous examinez le diff, vous acceptez ou refusez. Rien ne change dans vos fichiers sans votre accord.
+
+**Mode Code** — Claude applique les modifications de fichiers automatiquement, mais marque une pause avant d'exécuter des commandes terminal pour vous demander confirmation.
+
+**Mode Plan** — Claude décrit son approche avant toute intervention. Un outil dédié vous permet de consulter et réviser la stratégie au fil de l'avancement. Utile pour les tâches complexes où vous voulez valider la logique avant que l'exécution commence.
+
+<Tip>
+Le mode Code est en cours de déploiement pour les abonnés Pro, Max, Team et Enterprise.
+</Tip>
+
+---
+
+## Cowork vs Code — quelle différence ?
+
+Les deux modes partagent le même moteur, mais ils ne répondent pas aux mêmes besoins. Cowork travaille dans un espace isolé sur des dossiers délimités, orienté recherche et production de documents. Code s'exécute avec un accès complet à votre projet, votre terminal et vos outils — c'est l'environnement pour écrire, tester et déployer du code.
+
+## Autrement dit
+
+<Tip>
+Le mode Code, c'est avoir un développeur compétent qui travaille dans votre codebase pendant que vous restez aux commandes. Il propose, vous validez. Ou vous lui faites confiance et il avance — selon le niveau d'autonomie que vous choisissez.
+</Tip>
+
+---
+
+## Exercices pratiques
+
+**Exercice 1 — Explorer un projet existant**
+
+Ouvrez en mode local un projet que vous connaissez bien. Demandez à Claude d'expliquer comment une partie spécifique fonctionne, ou de lister ce qu'il faudrait modifier pour ajouter une fonctionnalité précise. Évaluez la pertinence de son analyse — c'est un bon test de sa capacité à lire votre contexte.
+
+**Exercice 2 — Tester les niveaux d'autonomie**
+
+Sur un projet de test (pas en production), faites la même demande de modification en mode Ask, puis en mode Code. Observez la différence dans le flux de validation. Déterminez quel niveau correspond à quel type de tâche dans votre contexte habituel.

@@ -1,0 +1,99 @@
+---
+title: "Les compétences : enseigner à Claude vos méthodes"
+description: "Une compétence encode un processus — une façon précise de faire les choses — que Claude applique de façon reproductible, sans que vous ayez à réexpliquer la méthode à chaque fois."
+---
+
+## Ce que c'est
+
+Une compétence (*skill*) est un ensemble d'instructions, de scripts et de ressources que Claude charge dynamiquement pour exécuter une tâche spécialisée. Là où un projet stocke ce que Claude doit savoir, une compétence encode ce qu'il doit faire — les étapes, l'ordre, la méthode à suivre systématiquement.
+
+---
+
+## Deux catégories de compétences
+
+**Les compétences intégrées** sont développées et maintenues par Anthropic. Elles couvrent les tâches courantes de création de fichiers : feuilles de calcul Excel, présentations PowerPoint, documents Word, PDF. Disponibles pour tous les abonnés payants, elles s'activent automatiquement quand vous faites une demande pertinente — rien à configurer.
+
+**Les compétences personnalisées** sont celles que vous ou votre organisation créez. Elles permettent d'encoder vos propres flux de travail : appliquer votre charte graphique aux présentations, structurer vos comptes-rendus dans un format précis, exécuter une méthodologie d'analyse propre à votre domaine.
+
+---
+
+## Activer les compétences
+
+Les compétences sont disponibles en avant-première pour les abonnés Pro, Max, Team et Enterprise. Elles reposent sur l'environnement d'exécution sécurisé de Claude — l'exécution de code et la création de fichiers doivent donc être activées au préalable.
+
+Pour activer :
+
+1. Allez dans **Paramètres > Fonctionnalités**
+2. Vérifiez que **l'exécution de code et la création de fichiers** est activée
+3. Faites défiler jusqu'à la section **Compétences**
+4. Activez ou désactivez les compétences individuellement selon vos besoins
+
+Pour les abonnés Enterprise, un administrateur doit d'abord activer l'exécution de code au niveau de l'organisation. Pour les abonnés Team, c'est activé par défaut.
+
+---
+
+## En pratique
+
+Vous n'avez généralement pas à vous préoccuper du déclenchement des compétences — Claude gère cela automatiquement. Des demandes comme celles-ci activent les compétences intégrées sans que vous ayez à le préciser :
+
+- *"Crée une feuille de calcul Excel pour suivre mes dépenses mensuelles avec des totaux automatiques"*
+- *"Transforme ce compte-rendu en présentation PowerPoint"*
+- *"Génère un rapport PDF à partir de ces données"*
+
+Le résultat est un fichier téléchargeable que vous pouvez enregistrer localement ou ouvrir directement dans Google Drive.
+
+---
+
+## Travailler sur vos fichiers existants
+
+Cette même fonctionnalité permet à Claude de travailler directement sur vos fichiers. Importez une présentation, une feuille de calcul ou un contrat (formats `.xlsx`, `.pptx`, `.docx`, `.pdf`), et Claude peut l'analyser, le modifier et vous restituer le fichier mis à jour.
+
+<Tip>
+Pour utiliser cette fonctionnalité, vous devrez autoriser Claude à accéder à des sources de données externes. Activez l'option "Autoriser l'accès réseau limité" quand elle vous est proposée.
+</Tip>
+
+---
+
+## Créer vos propres compétences
+
+La façon la plus directe de créer une compétence personnalisée, c'est de dialoguer avec Claude. Pas besoin d'écrire du code ou de créer des fichiers manuellement.
+
+Le processus :
+
+1. **Lancez une conversation** en expliquant ce que vous voulez créer. Exemple : *"Je veux créer une compétence pour rédiger nos rapports d'activité trimestriels selon notre format habituel."*
+2. **Répondez aux questions de cadrage** que Claude vous posera : à quoi sert cette compétence, à quoi ressemble un bon résultat, dans quelles situations l'utiliseriez-vous ?
+3. **Joignez des références** si vous en avez : modèles existants, exemples de livrables réussis, chartes graphiques.
+4. **Téléchargez le fichier ZIP** généré par Claude, qui contient la compétence correctement structurée.
+5. **Importez-le** dans **Paramètres > Fonctionnalités > Compétences > Importer une compétence**.
+
+Une fois installée, la compétence s'active automatiquement quand vous faites une demande dans son domaine.
+
+---
+
+## Projets et compétences : deux outils complémentaires
+
+Ces deux fonctionnalités répondent à des besoins distincts et se combinent naturellement.
+
+Un **projet** stocke ce que Claude doit *connaître* : documents de référence, contexte, données. Il répond à la question *"Qu'est-ce que Claude doit savoir ?"*
+
+Une **compétence** encode ce que Claude doit *faire* : les étapes précises, l'ordre des opérations, la méthodologie à appliquer systématiquement. Elle répond à la question *"Comment Claude doit-il procéder ?"*
+
+Les deux se combinent : une compétence peut puiser dans la base de connaissances d'un projet. Par exemple, une compétence de préparation des appels clients peut s'appuyer sur les fiches clients chargées dans le projet correspondant.
+
+## Autrement dit
+
+<Tip>
+Une compétence, c'est comme remettre à Claude un mode opératoire écrit : il sait exactement dans quel ordre faire les choses, selon quels critères, dans quel format. Ce n'est plus vous qui expliquez à chaque fois — c'est lui qui applique une méthode que vous avez définie une seule fois.
+</Tip>
+
+---
+
+## Exercices pratiques
+
+**Exercice 1 — Tester une compétence intégrée**
+
+Demandez à Claude de créer un fichier Excel ou PowerPoint à partir d'un contenu que vous lui fournissez — un tableau de données, des notes de réunion, une liste de points à présenter. Téléchargez le fichier et évaluez le résultat. Qu'est-ce qui est bien rendu ? Qu'est-ce qui nécessiterait des instructions supplémentaires ?
+
+**Exercice 2 — Concevoir une compétence personnalisée**
+
+Identifiez une tâche récurrente dans votre travail qui suit toujours le même processus. Décrivez-la à Claude et laissez-le vous poser ses questions de cadrage. Sans aller jusqu'à créer la compétence complète, notez quelles informations il vous a demandées — c'est exactement ce qu'une bonne compétence doit encoder.
