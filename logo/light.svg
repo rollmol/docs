@@ -1,14 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 52">
-  <!-- Icône (identique dans les deux versions) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 52">
+  <!-- Icône (identique) -->
   <rect x="2" y="2" width="48" height="48" rx="11" fill="#6366F1"/>
 
-  <!-- Connexions -->
+  <!-- Connexions satellites → centre -->
   <line x1="16" y1="16" x2="23" y2="23" stroke="white" stroke-width="2" opacity="0.8"/>
   <line x1="36" y1="16" x2="29" y2="23" stroke="white" stroke-width="2" opacity="0.8"/>
   <line x1="16" y1="36" x2="23" y2="29" stroke="white" stroke-width="2" opacity="0.8"/>
   <line x1="36" y1="36" x2="29" y2="29" stroke="white" stroke-width="2" opacity="0.8"/>
+
+  <!-- Connexions horizontales périphériques -->
   <line x1="16" y1="16" x2="36" y2="16" stroke="white" stroke-width="1" opacity="0.3"/>
   <line x1="16" y1="36" x2="36" y2="36" stroke="white" stroke-width="1" opacity="0.3"/>
+
+  <!-- Pointillé vers nœud fantôme -->
   <line x1="26" y1="33" x2="26" y2="43" stroke="white" stroke-width="1.2" opacity="0.3" stroke-dasharray="2.5 2.5"/>
 
   <!-- Nœuds satellites -->
@@ -21,13 +25,13 @@
   <circle cx="26" cy="26" r="6.5" fill="white"/>
 
   <!-- Nœud fantôme -->
-  <circle cx="26" cy="44" r="2.5" fill="white" opacity="0.3"/>
+  <circle cx="26" cy="45" r="2.5" fill="white" opacity="0.3"/>
 
-  <!-- Texte "Tramio" — gris foncé pour fond clair -->
-  <text x="64" y="32"
+  <!-- Texte sombre -->
+  <text x="64" y="33"
         font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
-        font-size="26"
+        font-size="28"
         font-weight="500"
-        fill="#1a1a2e"
-        letter-spacing="-0.4">Tramio</text>
+        fill="#1e1e2e"
+        letter-spacing="-0.5">Tramio</text>
 </svg>
